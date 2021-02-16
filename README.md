@@ -1,7 +1,7 @@
 Role Name
 =========
 
-This role will insall Docker on Ubuntu.
+This role will install Docker on Ubuntu.
 
 Requirements
 ------------
