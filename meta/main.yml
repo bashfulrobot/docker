@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Dustin Krysak
+  description: install Docker
+  company:
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  platforms:
+   - name: Ubuntu
+     versions:
+     - focal
+     - groovy
+
+  galaxy_tags:
+    - Docker
+    - Ubuntu
+
+dependencies: []

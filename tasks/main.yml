@@ -1,0 +1,56 @@
+---
+- name: add docker's public pgp key to the apt keyring
+  become: yes
+  apt_key:
+    id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+
+# Hard code release so that it will work on 20.04
+# When Docker supports officially - need to change
+- name: add docker's stable apt repository
+  become: yes
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+    update_cache: true
+
+- name: install docker dependencies
+  become: yes
+  apt:
+    update_cache: yes
+    name: "{{ dockerdeppackages }}"
+    state: "present"
+  vars:
+    dockerdeppackages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+
+- name: remove docker apt packages from ubuntu repository
+  become: yes
+  apt:
+    pkg:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+    state: absent
+
+- name: install docker ce
+  become: yes
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose
+    state: present
+
+- name: add "{{ lookup('env','USER') }}" user to docker group
+  become: yes
+  user:
+    name: "{{ lookup('env','USER') }}"
+    groups: docker
+    append: yes
